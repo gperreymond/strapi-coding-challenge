@@ -13,8 +13,9 @@
   "license": "UNLICENSED",
   "scripts": {
     "knex:migrate": "knex migrate:latest",
-    "knex:unmigrate": "knex migrate:rollback",
+    "knex:rollback": "knex migrate:rollback",
     "knex:seed": "knex seed:run",
+    "knex:all": "knex migrate:rollback && knex migrate:latest && knex seed:run",
     "start": "node scripts/start",
     "test": "APP_GATEWAY_PORT=7070 APP_APOLLO_PORT=3030 jest --coverage --verbose --detectOpenHandles --forceExit",
     "standard": "standard"

@@ -7,9 +7,9 @@
     "index.js",
     "nconf.json",
     "config",
-    "services",
-    "models",
-    "modules"
+    "graphql",
+    "modules",
+    "services"
   ],
   "exec": "node ."
 }

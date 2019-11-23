@@ -1,6 +1,6 @@
 module.exports = {
   Query: {
     planets: 'Planets.GraphQLResolverQuery',
-    spaceCenters: 'ScapeCenters.GraphQLResolverQuery'
+    spaceCenters: 'SpaceCenters.GraphQLResolverQuery'
   }
 }

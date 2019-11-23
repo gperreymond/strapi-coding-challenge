@@ -16,6 +16,9 @@ module.exports = `
     uid: String!
     name: String!
     description: String!
+    latitude: Float!
+    longitude: Float!
+    planet: Planet
   }
   """
   This type describes a flight entity.

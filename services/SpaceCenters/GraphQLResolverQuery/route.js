@@ -1,16 +1,9 @@
 const Boom = require('@hapi/boom')
 
-const Configuration = require('../../../config')
-
-const handler = async () => {
+const handler = async (request) => {
   try {
-    const { env, name, version, commit } = Configuration
-    return {
-      env,
-      name,
-      version,
-      commit
-    }
+    const data = await request.$moleculer.call('SpaceCenters.GraphQLResolverQuery')
+    return data
   } catch (e) {
     return Boom.boomify(e, { statusCode: 400 })
   }
@@ -18,7 +11,7 @@ const handler = async () => {
 
 module.exports = {
   method: 'get',
-  path: '/hc',
+  path: '/api/spaceCenters',
   handler,
   options: {
     plugins: {
@@ -30,8 +23,8 @@ module.exports = {
       }
     },
     auth: false,
-    log: { collect: false },
-    tags: ['api', 'System'],
-    description: 'Get the healthcheck of the server'
+    log: { collect: true },
+    tags: ['api', 'Planets'],
+    description: 'Get all planets'
   }
 }

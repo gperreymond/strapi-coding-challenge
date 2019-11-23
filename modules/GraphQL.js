@@ -17,7 +17,7 @@ class GraphQL {
     this.addResolvers()
     // Get all typeDefs
     this._typeDefs = ''
-    this.addDef(require('../graphql/Models'))
+    this.addDef(require('../graphql/Schemas'))
     this.addDef(require('../graphql/Queries'))
     EventEmitter.call(this)
   }
@@ -28,7 +28,10 @@ class GraphQL {
       const queries = Object.keys(r.Query)
       queries.map(key => {
         debug(`Resolver ${key} has been added`)
-        this._resolvers.Query[key] = async (_, args, ctx) => ctx.$moleculer.call(r.Query[key], args)
+        this._resolvers.Query[key] = async (parent, args, context, info) => {
+          console.log(r.Query[key])
+          return context.$moleculer.call(r.Query[key], args)
+        }
       })
     }
   }
