@@ -1,1 +1,1 @@
-# strapi-coding-challenge
+# Strapi Coding Challenge

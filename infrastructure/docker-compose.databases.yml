@@ -1,0 +1,74 @@
+version: '3.7'
+
+services:
+
+  memcached:
+    image: memcached:1.5.19-alpine
+    networks:
+      - private_databases
+      - public
+    deploy:
+      mode: replicated
+      replicas: 1
+    ports:
+      - target: 11211
+        published: 11211
+        mode: host
+
+  postgres:
+    image: "postgres:9.6-alpine"
+    environment:
+      POSTGRES_USER: "infra"
+      POSTGRES_PASSWORD: "infra"
+    networks:
+      - private_databases
+      - global
+      - public
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    deploy:
+      mode: replicated
+      replicas: 1
+    ports:
+      - target: 5432
+        published: 5432
+        mode: host
+
+  rethinkdb:
+    image: rethinkdb:2.3.6
+    networks:
+      - private_databases
+      - public
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.docker.network=public"
+        - "traefik.port=8080"
+        - "traefik.backend=rethinkdb"
+        - "traefik.enable=true"
+        - "traefik.frontend.rule=Host:rethinkdb.docker.localhost"
+        - "traefik.frontend.headers.SSLRedirect=true"
+        - "traefik.frontend.entryPoints=http,https"
+    volumes:
+      - rethinkdb_data:/data
+    ports:
+      - target: 28015
+        published: 28015
+        mode: host
+
+volumes:
+
+  postgres_data:
+  mysql_data:
+  rethinkdb_data:
+
+networks:
+
+  private_databases:
+    driver: overlay
+    name: private_databases
+  global:
+    external: true
+  public:
+    external: true

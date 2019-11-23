@@ -13,7 +13,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "start": "node scripts/start",
-    "test": "APP_PORT=4000 jest --coverage --verbose --detectOpenHandles --forceExit",
+    "test": "APP_PORT=7070 APOLLO_PORT=3030 jest --coverage --verbose --detectOpenHandles --forceExit",
     "standard": "standard"
   },
   "dependencies": {

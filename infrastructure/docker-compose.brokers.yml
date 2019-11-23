@@ -1,0 +1,49 @@
+version: '3.7'
+
+services:
+
+  nats:
+    image: "nats:2.0.4-linux"
+    command: >
+      --user infra
+      --pass infra
+    networks:
+      - private_brokers
+      - public
+    deploy:
+      mode: replicated
+      replicas: 1
+    ports:
+      - "4222:4222"
+
+  rabbitmq:
+    image: "rabbitmq:3.7.17-management-alpine"
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "infra"
+      RABBITMQ_DEFAULT_PASS: "infra"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    networks:
+      - private_brokers
+      - public
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.docker.network=public"
+        - "traefik.port=15672"
+        - "traefik.backend=rabbitmq"
+        - "traefik.enable=true"
+        - "traefik.frontend.rule=Host:rabbitmq.docker.localhost"
+        - "traefik.frontend.headers.SSLRedirect=true"
+        - "traefik.frontend.entryPoints=http,https"
+    ports:
+      - "5672:5672"
+
+networks:
+
+  private_brokers:
+    driver: overlay
+    name: private_brokers
+  public:
+    external: true

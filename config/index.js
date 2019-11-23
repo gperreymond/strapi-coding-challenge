@@ -6,11 +6,13 @@ nconf.argv().env().file({ file: 'nconf.json' })
 // ************************************
 let APP_MOLECULER_LOGGER = false
 let APP_PORT = 7000
+let APOLLO_PORT = 3000
 let APP_RABBITMQ_PORT = 5672
 let APP_NATS_PORT = 4222
 // ************************************
 if (nconf.get('APP_MOLECULER_LOGGER')) { APP_MOLECULER_LOGGER = nconf.get('APP_MOLECULER_LOGGER') === 'true' }
 if (nconf.get('APP_PORT')) { APP_PORT = parseInt(nconf.get('APP_PORT')) }
+if (nconf.get('APOLLO_PORT')) { APOLLO_PORT = parseInt(nconf.get('APOLLO_PORT')) }
 if (nconf.get('APP_RABBITMQ_PORT')) { APP_RABBITMQ_PORT = parseInt(nconf.get('APP_RABBITMQ_PORT')) }
 if (nconf.get('APP_NATS_PORT')) { APP_NATS_PORT = parseInt(nconf.get('APP_NATS_PORT')) }
 // ************************************
@@ -34,6 +36,9 @@ module.exports = {
     username: nconf.get('APP_NATS_USERNAME') || 'infra',
     password: nconf.get('APP_NATS_PASSWORD') || 'infra',
     maxReconnectAttempts: 3
+  },
+  apollo: {
+    port: APOLLO_PORT
   },
   moleculer: {
     logger: APP_MOLECULER_LOGGER

@@ -4,6 +4,8 @@ const EventEmitter = require('events')
 const { inherits } = require('util')
 const { ApolloServer, gql } = require('apollo-server')
 
+const Configuration = require('../config')
+
 class GraphQL {
   constructor (params) {
     const { moleculer } = params
@@ -49,7 +51,7 @@ class GraphQL {
         })
       })
       // The `listen` method launches a web server.
-      await this._instance.listen({ port: 3000 })
+      await this._instance.listen({ port: Configuration.APOLLO_PORT })
       debug('Server started')
       return true
     } catch (e) {
