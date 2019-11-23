@@ -8,6 +8,7 @@
     "nconf.json",
     "config",
     "services",
+    "models",
     "modules"
   ],
   "exec": "node ."

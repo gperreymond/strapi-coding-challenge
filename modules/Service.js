@@ -65,11 +65,20 @@ const getMethods = (domain) => {
   return methods
 }
 
+const getMixins = (domain) => {
+  const files = glob.sync(`${path.resolve(__dirname, '../services', domain)}/mixins.js`)
+  if (files.length === 0) { return {} }
+  debug(`Domain ${domain}, Settings has been found`)
+  const settings = require(`${path.resolve(__dirname, '../services', domain)}/mixins.js`)
+  return settings
+}
+
 class Service {
   constructor (name) {
-    const methods = getMethods(`${name}`)
-    const queries = getQueries(`${name}`)
-    const commands = getCommands(`${name}`)
+    const methods = getMethods(name)
+    const queries = getQueries(name)
+    const commands = getCommands(name)
+    const mixins = getMixins(name)
     const actions = {
       ...queries,
       ...commands
@@ -78,6 +87,7 @@ class Service {
     this._name = name
     this._instance = {
       name,
+      mixins,
       actions,
       events,
       methods,

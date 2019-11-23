@@ -2,6 +2,7 @@ const debug = require('debug')('application:main'.padEnd(25, ' '))
 
 const Moleculer = require('./modules/Moleculer')
 const Server = require('./modules/Server')
+const GraphQL = require('./modules/GraphQL')
 const Configuration = require('./config')
 
 debug(`Starting application: ${Configuration.env}`)
@@ -27,7 +28,12 @@ const start = async function () {
     // Server (Gateway)
     const server = new Server()
     server.on('error', err => { throw err })
+    server.getInstance().decorate('request', '$moleculer', moleculer.getInstance())
     await server.start()
+    // GraphQL
+    const params = { moleculer: moleculer.getInstance() }
+    const apollo = new GraphQL(params)
+    await apollo.start()
     debug('Application started')
   } catch (e) {
     console.log('******************** ERROR')
