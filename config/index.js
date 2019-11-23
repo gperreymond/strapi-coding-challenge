@@ -5,16 +5,18 @@ nconf.argv().env().file({ file: 'nconf.json' })
 // Typecasting from kube env
 // ************************************
 let APP_MOLECULER_LOGGER = false
-let APP_PORT = 7000
-let APOLLO_PORT = 3000
+let APP_GATEWAY_PORT = 7000
+let APP_APOLLO_PORT = 3000
 let APP_RABBITMQ_PORT = 5672
 let APP_NATS_PORT = 4222
+let APP_POSTGRES_PORT = 5432
 // ************************************
 if (nconf.get('APP_MOLECULER_LOGGER')) { APP_MOLECULER_LOGGER = nconf.get('APP_MOLECULER_LOGGER') === 'true' }
-if (nconf.get('APP_PORT')) { APP_PORT = parseInt(nconf.get('APP_PORT')) }
-if (nconf.get('APOLLO_PORT')) { APOLLO_PORT = parseInt(nconf.get('APOLLO_PORT')) }
+if (nconf.get('APP_GATEWAY_PORT')) { APP_GATEWAY_PORT = parseInt(nconf.get('APP_GATEWAY_PORT')) }
+if (nconf.get('APP_APOLLO_PORT')) { APP_APOLLO_PORT = parseInt(nconf.get('APP_APOLLO_PORT')) }
 if (nconf.get('APP_RABBITMQ_PORT')) { APP_RABBITMQ_PORT = parseInt(nconf.get('APP_RABBITMQ_PORT')) }
 if (nconf.get('APP_NATS_PORT')) { APP_NATS_PORT = parseInt(nconf.get('APP_NATS_PORT')) }
+if (nconf.get('APP_POSTGRES_PORT')) { APP_POSTGRES_PORT = parseInt(nconf.get('APP_POSTGRES_PORT')) }
 // ************************************
 
 module.exports = {
@@ -22,8 +24,10 @@ module.exports = {
   name: require('../package.json').name,
   version: require('../package.json').version,
   commit: `${require('../package.json').homepage || ''}/commit/${nconf.get('APP_LAST_COMMIT') || 'localhost'}`,
-  host: nconf.get('APP_HOST') || '0.0.0.0',
-  port: APP_PORT,
+  gateway: {
+    hostname: nconf.get('APP_GATEWAY_HOSTNAME') || '0.0.0.0',
+    port: APP_GATEWAY_PORT
+  },
   rabbitmq: {
     hostname: nconf.get('APP_RABBITMQ_HOSTNAME') || 'localhost',
     port: APP_RABBITMQ_PORT,
@@ -37,8 +41,14 @@ module.exports = {
     password: nconf.get('APP_NATS_PASSWORD') || 'infra',
     maxReconnectAttempts: 3
   },
+  postgres: {
+    hostname: nconf.get('APP_POSTGRES_HOSTNAME') || 'localhost',
+    port: APP_POSTGRES_PORT,
+    username: nconf.get('APP_POSTGRES_USERNAME') || 'infra',
+    password: nconf.get('APP_POSTGRES_PASSWORD') || 'infra'
+  },
   apollo: {
-    port: APOLLO_PORT
+    port: APP_APOLLO_PORT
   },
   moleculer: {
     logger: APP_MOLECULER_LOGGER

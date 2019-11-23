@@ -37,8 +37,8 @@ const validateBasic = async (request, username, password) => {
 class Server {
   constructor () {
     this._instance = new Hapi.Server({
-      host: Configuration.host,
-      port: Configuration.port,
+      host: Configuration.gateway.hostname,
+      port: Configuration.gateway.port,
       routes: {
         cors: true
       }
@@ -105,7 +105,7 @@ class Server {
       await this.plugins()
       await this.routes()
       await this.getInstance().start()
-      debug('Server started')
+      debug(`Gateway Server started on port: ${Configuration.gateway.port}`)
       return true
     } catch (e) {
       this.emit('error', e)

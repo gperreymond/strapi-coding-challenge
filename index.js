@@ -28,10 +28,10 @@ const start = async function () {
     // Server (Gateway)
     const server = new Server()
     server.on('error', err => { throw err })
-    server.getInstance().decorate('request', '$moleculer', moleculer.getInstance())
+    server.getInstance().decorate('request', '$moleculer', moleculer.getInstance()) // add molecuer instance to request
     await server.start()
     // GraphQL
-    const params = { moleculer: moleculer.getInstance() }
+    const params = { moleculer: moleculer.getInstance() } // add moleculer instance to apollo context
     const apollo = new GraphQL(params)
     await apollo.start()
     debug('Application started')
