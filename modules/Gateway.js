@@ -34,7 +34,7 @@ const validateBasic = async (request, username, password) => {
   return { isValid, credentials: { name: basic.username } }
 }
 
-class Server {
+class Gateway {
   constructor () {
     this._instance = new Hapi.Server({
       host: Configuration.gateway.hostname,
@@ -114,5 +114,5 @@ class Server {
   }
 }
 
-inherits(Server, EventEmitter)
-module.exports = Server
+inherits(Gateway, EventEmitter)
+module.exports = Gateway

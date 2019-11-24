@@ -2,7 +2,7 @@ const Boom = require('@hapi/boom')
 
 const handler = async (request) => {
   try {
-    const data = await request.$moleculer.call('Planets.GraphQLResolverQuery')
+    const data = await request.$moleculer.call('SpaceCenters.GraphQLResolverQuery')
     return data
   } catch (e) {
     return Boom.boomify(e, { statusCode: 400 })
@@ -11,7 +11,7 @@ const handler = async (request) => {
 
 module.exports = {
   method: 'get',
-  path: '/api/planets',
+  path: '/api/spaceCenters',
   handler,
   options: {
     plugins: {
@@ -25,6 +25,6 @@ module.exports = {
     auth: false,
     log: { collect: true },
     tags: ['api', 'Planets'],
-    description: 'Get all planets'
+    description: 'Returns a paginated list of space centers'
   }
 }

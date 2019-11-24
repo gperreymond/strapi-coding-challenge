@@ -3,11 +3,8 @@ const db = require('../../../data/db')
 const handler = async function (ctx) {
   try {
     ctx.broker.logger.warn(ctx.action.name, ctx.params)
-    const data = db('space_centers').map(async function (row) {
-      const results = await db('planets').where('code', row.planet_code)
-      row.planet = results[0]
-      return row
-    })
+    const { planetCode, limit } = ctx.params
+    const data = db('space_centers').where('planet_code', planetCode).limit(limit)
     return data
   } catch (e) {
     ctx.broker.logger.error(ctx.action.name, e.message)

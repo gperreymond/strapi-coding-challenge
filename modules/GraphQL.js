@@ -3,6 +3,7 @@ const debug = require('debug')('application:graphql'.padEnd(25, ' '))
 const EventEmitter = require('events')
 const { inherits } = require('util')
 const { ApolloServer, gql } = require('apollo-server')
+const responseCachePlugin = require('apollo-server-plugin-response-cache')
 
 const Configuration = require('../config')
 
@@ -11,29 +12,12 @@ class GraphQL {
     const { moleculer } = params
     this._moleculer = moleculer
     // Get all resolvers
-    this._resolvers = {
-      Query: {}
-    }
-    this.addResolvers()
+    this._resolvers = require('../graphql/Resolvers')
     // Get all typeDefs
     this._typeDefs = ''
     this.addDef(require('../graphql/Schemas'))
     this.addDef(require('../graphql/Queries'))
     EventEmitter.call(this)
-  }
-
-  addResolvers () {
-    const r = require('../graphql/Resolvers')
-    if (r.Query) {
-      const queries = Object.keys(r.Query)
-      queries.map(key => {
-        debug(`Resolver ${key} has been added`)
-        this._resolvers.Query[key] = async (parent, args, context, info) => {
-          console.log(r.Query[key])
-          return context.$moleculer.call(r.Query[key], args)
-        }
-      })
-    }
   }
 
   addDef (content) {
@@ -53,7 +37,8 @@ class GraphQL {
         resolvers: this._resolvers,
         context: async () => ({
           $moleculer: this._moleculer
-        })
+        }),
+        plugins: [responseCachePlugin()]
       })
       // The `listen` method launches a web server.
       await this._instance.listen({ port: Configuration.apollo.port })

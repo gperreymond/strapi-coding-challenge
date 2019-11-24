@@ -32,6 +32,6 @@ module.exports = {
     auth: false,
     log: { collect: false },
     tags: ['api', 'System'],
-    description: 'Get the healthcheck of the server'
+    description: 'Get the healthcheck of the gateway'
   }
 }

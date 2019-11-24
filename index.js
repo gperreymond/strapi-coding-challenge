@@ -1,7 +1,7 @@
 const debug = require('debug')('application:main'.padEnd(25, ' '))
 
 const Moleculer = require('./modules/Moleculer')
-const Server = require('./modules/Server')
+const Gateway = require('./modules/Gateway')
 const GraphQL = require('./modules/GraphQL')
 const Configuration = require('./config')
 
@@ -25,11 +25,11 @@ const start = async function () {
     const moleculer = new Moleculer()
     moleculer.on('error', err => { throw err })
     await moleculer.start()
-    // Server (Gateway)
-    const server = new Server()
-    server.on('error', err => { throw err })
-    server.getInstance().decorate('request', '$moleculer', moleculer.getInstance()) // add molecuer instance to request
-    await server.start()
+    // Gateway (Hapi server)
+    const gateway = new Gateway()
+    gateway.on('error', err => { throw err })
+    gateway.getInstance().decorate('request', '$moleculer', moleculer.getInstance()) // add molecuer instance to request
+    await gateway.start()
     // GraphQL
     const params = { moleculer: moleculer.getInstance() } // add moleculer instance to apollo context
     const apollo = new GraphQL(params)
