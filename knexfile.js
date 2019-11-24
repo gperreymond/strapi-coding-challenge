@@ -20,6 +20,9 @@ module.exports = {
     },
     seeds: { directory: './data/seeds' }
   },
+  test: {
+    client: 'sqlite3'
+  },
   demo: {
     ...conn
   },
