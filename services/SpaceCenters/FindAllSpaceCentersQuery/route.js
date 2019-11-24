@@ -1,11 +1,9 @@
-const Boom = require('@hapi/boom')
-
 const handler = async (request) => {
   try {
-    const data = await request.$moleculer.call('SpaceCenters.GraphQLResolverQuery')
+    const data = await request.$moleculer.call('SpaceCenters.FindAllSpaceCentersQuery')
     return data
   } catch (e) {
-    return Boom.boomify(e, { statusCode: 400 })
+    return e
   }
 }
 

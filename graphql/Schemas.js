@@ -1,5 +1,13 @@
 module.exports = `
   """
+  This type describes a pagination entity.
+  """
+  type Pagination {
+    total: Int!
+    page: Int!
+    pageSize: Int!
+  }
+  """
   This type describes a planet entity.
   """
   type Planet @cacheControl(maxAge: 240) {
@@ -19,6 +27,13 @@ module.exports = `
     latitude: Float!
     longitude: Float!
     planet: Planet
+  }
+  """
+  This type describes a result of paginate space centers listing.
+  """
+  type SpaceCentersResult {
+    pagination: Pagination
+    nodes: [SpaceCenter]
   }
   """
   This type describes a flight entity.

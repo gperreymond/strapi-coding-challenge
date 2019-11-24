@@ -3,8 +3,19 @@ module.exports = {
     planets: (_, __, context, ___) => {
       return context.$moleculer.call('Planets.FindAllPlanetsQuery')
     },
-    spaceCenters: (_, __, context, ___) => {
-      return context.$moleculer.call('SpaceCenters.FindAllSpaceCentersQuery')
+    spaceCenters: async (_, { page, pageSize }, context, ___) => {
+      if (!page) { page = 1 }
+      if (!pageSize) { pageSize = 10 }
+      const { total } = await context.$moleculer.call('SpaceCenters.GetTotalOfSpaceCentersQuery')
+      // const nodes = await context.$moleculer.call('SpaceCenters.FindAllSpaceCentersQuery', { skip, limit })
+      return {
+        pagination: {
+          total,
+          page,
+          pageSize
+        },
+        nodes: []
+      }
     }
   },
   Planet: {
