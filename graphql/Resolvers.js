@@ -7,14 +7,14 @@ module.exports = {
       if (!page) { page = 1 }
       if (!pageSize) { pageSize = 10 }
       const { total } = await context.$moleculer.call('SpaceCenters.GetTotalOfSpaceCentersQuery')
-      // const nodes = await context.$moleculer.call('SpaceCenters.FindAllSpaceCentersQuery', { skip, limit })
+      const nodes = await context.$moleculer.call('SpaceCenters.FindAllSpaceCentersQuery', { skip: (page - 1) * pageSize, limit: pageSize })
       return {
         pagination: {
           total,
           page,
           pageSize
         },
-        nodes: []
+        nodes
       }
     }
   },

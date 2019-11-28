@@ -4,7 +4,7 @@ const handler = async function (ctx) {
   try {
     ctx.broker.logger.warn(ctx.action.name, ctx.params)
     const { skip, limit } = ctx.params
-    const data = db('space_centers').skip(skip).limit(limit)
+    const data = db('space_centers').offset(skip).limit(limit)
     return data
   } catch (e) {
     ctx.broker.logger.error(ctx.action.name, e.message)

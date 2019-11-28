@@ -1,5 +1,8 @@
+const Joi = require('@hapi/joi')
+
 const handler = async (request) => {
   try {
+    console.log(request.query)
     const data = await request.$moleculer.call('SpaceCenters.FindAllSpaceCentersQuery')
     return data
   } catch (e) {
@@ -12,8 +15,14 @@ module.exports = {
   path: '/api/spaceCenters',
   handler,
   options: {
+    validate: {
+      query: {
+        page: Joi.number().min(1).max(100).default(1).required().description('Page number for the result')
+      }
+    },
     plugins: {
       'hapi-swagger': {
+        payloadType: 'form',
         responses: {
           200: { description: 'Success' },
           500: { description: 'Internal Server Error' }

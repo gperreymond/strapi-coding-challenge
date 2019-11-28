@@ -4,8 +4,8 @@ module.exports = `
   """
   type Pagination {
     total: Int!
-    page: Int!
-    pageSize: Int!
+    page(page: Int): Int!
+    pageSize(pageSize: Int): Int!
   }
   """
   This type describes a planet entity.

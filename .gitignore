@@ -7,3 +7,4 @@ node_modules
 nconf.json
 yarn-error.log
 yarn.lock
+test.sqlite
