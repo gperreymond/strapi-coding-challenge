@@ -7,7 +7,9 @@ const handler = async function (ctx) {
     const data = db('space_centers').offset(skip).limit(limit)
     return data
   } catch (e) {
+    /* istanbul ignore next */
     ctx.broker.logger.error(ctx.action.name, e.message)
+    /* istanbul ignore next */
     return Promise.reject(e)
   }
 }

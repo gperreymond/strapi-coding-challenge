@@ -1,3 +1,5 @@
+const axios = require('axios')
+
 const Moleculer = require('../modules/Moleculer')
 const Gateway = require('../modules/Gateway')
 const GraphQL = require('../modules/GraphQL')
@@ -30,8 +32,108 @@ describe('[Integration] The global application', () => {
   beforeAll(async () => {
     await start()
   })
-  test('should start', async () => {
-    expect(true).toEqual(true)
+  test('should call the gateway healthcheck and return 200', async () => {
+    try {
+      const { data: json } = await axios.get('http://localhost:7070/hc')
+      expect(json.env).toEqual('test')
+      expect(json.name).toEqual('strapi-coding-challenge')
+    } catch (e) {
+      expect(e).toEqual(null)
+    }
+  })
+  test('should call the gateway api planets and return 200', async () => {
+    try {
+      const { data: json } = await axios.get('http://localhost:7070/api/planets')
+      expect(json.length).toEqual(15)
+    } catch (e) {
+      expect(e).toEqual(null)
+    }
+  })
+  test('should call the gateway api spaceCenters and return 200, with no query params', async () => {
+    try {
+      const { data: json } = await axios.get('http://localhost:7070/api/spaceCenters')
+      expect(json.length).toEqual(10)
+    } catch (e) {
+      expect(e).toEqual(null)
+    }
+  })
+  test('should call the gateway api spaceCenters and return 200, with query params (page)', async () => {
+    try {
+      const { data: json } = await axios.get('http://localhost:7070/api/spaceCenters?page=2')
+      expect(json.length).toEqual(10)
+    } catch (e) {
+      expect(e).toEqual(null)
+    }
+  })
+  test('should call the gateway api spaceCenters and return 200, with query params (page, pageSize)', async () => {
+    try {
+      const { data: json } = await axios.get('http://localhost:7070/api/spaceCenters?page=1&pageSize=5')
+      expect(json.length).toEqual(5)
+    } catch (e) {
+      expect(e).toEqual(null)
+    }
+  })
+  test('should call apollo server and return a 500', async () => {
+    try {
+      await axios.post('http://localhost:3030/graphql')
+    } catch (e) {
+      expect(e.message).toEqual('Request failed with status code 500')
+    }
+  })
+  test('should call apollo server and return query on planets', async () => {
+    try {
+      const { data: json } = await axios.post('http://localhost:3030/graphql', {
+        query: `
+          query planets {
+            planets {
+              id
+              name
+              code
+              spaceCenters(limit: 2) {
+                id
+                name
+              }
+            }
+          }
+        `
+      })
+      expect(json.data.planets.length).toEqual(15)
+    } catch (e) {
+      expect(e.message).toEqual(null)
+    }
+  })
+  test('should call apollo server and return query on spaceCenters', async () => {
+    try {
+      const { data: json } = await axios.post('http://localhost:3030/graphql', {
+        query: `
+          query spaceCenters {
+            spaceCenters(page: 1, pageSize: 20) {
+              pagination {
+                total
+                page
+                pageSize
+              }
+              nodes {
+                id
+                uid
+                name
+                description
+                latitude
+                longitude
+                planet {
+                  id
+                  name
+                  code
+                }
+              }
+            }
+          }
+        `
+      })
+      expect(json.data.spaceCenters.nodes.length).toEqual(20)
+    } catch (e) {
+      expect(e.message).toEqual(null)
+    }
   })
   afterAll(async () => {
     await moleculer.stop()

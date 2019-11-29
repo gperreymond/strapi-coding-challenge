@@ -1,12 +1,16 @@
 const Joi = require('@hapi/joi')
 
-const handler = async (request) => {
+const handler = async ({ query: { page, pageSize }, $moleculer }) => {
   try {
-    console.log(request.query)
-    const data = await request.$moleculer.call('SpaceCenters.FindAllSpaceCentersQuery')
+    if (!page) { page = 1 }
+    if (!pageSize) { pageSize = 10 }
+    const data = await $moleculer.call('SpaceCenters.FindAllSpaceCentersQuery', { skip: (page - 1) * pageSize, limit: pageSize })
     return data
   } catch (e) {
-    return e
+    /* istanbul ignore next */
+    $moleculer.logger.error('SpaceCenters.FindAllSpaceCentersQuery', e.message)
+    /* istanbul ignore next */
+    return Promise.reject(e)
   }
 }
 
@@ -16,9 +20,10 @@ module.exports = {
   handler,
   options: {
     validate: {
-      query: {
-        page: Joi.number().min(1).max(100).default(1).required().description('Page number for the result')
-      }
+      query: Joi.object({
+        page: Joi.number().integer().min(1).description('Result page index'),
+        pageSize: Joi.number().integer().min(1).description('Number of items returned per page')
+      })
     },
     plugins: {
       'hapi-swagger': {

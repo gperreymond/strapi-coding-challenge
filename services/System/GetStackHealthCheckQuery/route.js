@@ -1,8 +1,6 @@
-const Boom = require('@hapi/boom')
-
 const Configuration = require('../../../config')
 
-const handler = async () => {
+const handler = async ({ $moleculer }) => {
   try {
     const { env, name, version, commit } = Configuration
     return {
@@ -12,7 +10,10 @@ const handler = async () => {
       commit
     }
   } catch (e) {
-    return Boom.boomify(e, { statusCode: 400 })
+    /* istanbul ignore next */
+    $moleculer.logger.error('System.GetStackHealthCheckQuery', e.message)
+    /* istanbul ignore next */
+    return Promise.reject(e)
   }
 }
 

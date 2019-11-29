@@ -1,9 +1,12 @@
-const handler = async (request) => {
+const handler = async ({ $moleculer }) => {
   try {
-    const data = await request.$moleculer.call('Planets.FindAllPlanetsQuery')
+    const data = await $moleculer.call('Planets.FindAllPlanetsQuery')
     return data
   } catch (e) {
-    return e
+    /* istanbul ignore next */
+    $moleculer.logger.error('Planets.FindAllPlanetsQuery', e.message)
+    /* istanbul ignore next */
+    return Promise.reject(e)
   }
 }
 
