@@ -2,13 +2,17 @@
 
 Le projet est "configuration driven", tout part de la définition des services et des actions, aussi appelés "microservices".
 
+![moleculer services](moleculer.png?raw=true)
+
+- https://moleculer.services/
+- https://hapi.dev/
+
 ### Architecture globale
 
 L'architecture de type "hexagonale", ou port/adapter, se base sur :
 
 __Moleculer__, brique de base, qui est un framework orienté microservices, avec du service discovery, du load balancing applicatif, voir même du circuit breaker, des métriques automatiques, etc.
 
-- https://moleculer.services/
 - https://moleculer.services/docs/0.13/
 
 __HapiJS__, pour le gateway, son orientation configuration driven et son orientation API en font un atout de choc sur ce type de projet.
@@ -19,7 +23,7 @@ Dans le projet, le serveur __graphql__ et __moleculer__ sont ensemble ; Il est b
 
 ### Bootstrap applicatif
 
-Rien de bien compliqué et du classiwue :
+Installation des dépendances :
 
 ```sh
 yarn
@@ -47,7 +51,15 @@ Il faut attendre que tout soit bien démarré, puis quand cela est fait, passez 
 yarn knex:all
 ```
 
-### Lancement et utilisation
+### Jouer les tests
+
+Le résultat du coverage sera dans le dossier __coverage__
+
+```sh
+yarn test
+```
+
+### Lancer en local
 
 Il est temps de lancer le projet :
 
