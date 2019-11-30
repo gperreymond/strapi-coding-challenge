@@ -30,7 +30,7 @@ module.exports = {
         }
       }
     },
-    auth: false,
+    auth: 'simple',
     log: { collect: false },
     tags: ['api', 'System'],
     description: 'Get the healthcheck of the gateway'

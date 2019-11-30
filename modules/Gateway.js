@@ -16,6 +16,7 @@ const Configuration = require('../config')
 const getRoutes = () => {
   const files = glob.sync(path.resolve(__dirname, '../', 'services/**/route.js'))
   const routes = []
+  /* istanbul ignore if */
   if (files.length === 0) { return routes }
   do {
     const file = files.shift()
@@ -26,10 +27,7 @@ const getRoutes = () => {
 }
 
 const validateBasic = async (request, username, password) => {
-  const basic = Configuration.auth.basic
-  if (!basic) {
-    return { isValid: false }
-  }
+  const { auth: { basic } } = Configuration
   const isValid = (username === basic.username && password === basic.password)
   return { isValid, credentials: { name: basic.username } }
 }
@@ -81,6 +79,7 @@ class Gateway {
     debug('Detecting server exposed routes')
     try {
       const routes = getRoutes()
+      /* istanbul ignore if */
       if (routes.length === 0) { return true }
       do {
         const route = routes.shift()

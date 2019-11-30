@@ -34,7 +34,12 @@ describe('[Integration] The global application', () => {
   })
   test('should call the gateway healthcheck and return 200', async () => {
     try {
-      const { data: json } = await axios.get('http://localhost:7070/hc')
+      const { data: json } = await axios.get('http://localhost:7070/hc', {
+        auth: {
+          username: 'infra',
+          password: 'infra'
+        }
+      })
       expect(json.env).toEqual('test')
       expect(json.name).toEqual('strapi-coding-challenge')
     } catch (e) {
@@ -267,8 +272,8 @@ describe('[Integration] The global application', () => {
     }
   })
   afterAll(async () => {
-    await moleculer.stop()
-    await apollo.stop()
-    await gateway.stop()
+    await moleculer.getInstance().stop()
+    await apollo.getInstance().stop()
+    await gateway.getInstance().stop()
   })
 })

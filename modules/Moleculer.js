@@ -14,6 +14,7 @@ class Moleculer {
     debug(`Initializing broker: ${type}`)
     this._type = type
     this._transporter = null
+    /* istanbul ignore if */
     if (type) {
       this._transporter = {
         type,
@@ -53,6 +54,7 @@ class Moleculer {
     debug('Detecting broker services')
     try {
       const services = glob.sync(`${path.resolve(__dirname, '../services')}/*`)
+      /* istanbul ignore if */
       if (services.length === 0) { return true }
       do {
         const item = services.shift()
@@ -71,7 +73,9 @@ class Moleculer {
       } while (services.length > 0)
       return true
     } catch (e) {
+      /* istanbul ignore next */
       this.emit('error', e)
+      /* istanbul ignore next */
       return Promise.reject(e)
     }
   }
