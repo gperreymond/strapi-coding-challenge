@@ -85,7 +85,9 @@ class Moleculer {
       debug('Moleculer started')
       return true
     } catch (e) {
+      /* istanbul ignore next */
       this.emit('error', e)
+      /* istanbul ignore next */
       return Promise.reject(e)
     }
   }

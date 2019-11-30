@@ -95,7 +95,9 @@ class Gateway {
       } while (routes.length > 0)
       return true
     } catch (e) {
+      /* istanbul ignore next */
       this.emit('error', e)
+      /* istanbul ignore next */
       return Promise.reject(e)
     }
   }
@@ -108,7 +110,9 @@ class Gateway {
       debug(`Gateway Server started on port: ${Configuration.gateway.port}`)
       return true
     } catch (e) {
+      /* istanbul ignore next */
       this.emit('error', e)
+      /* istanbul ignore next */
       return Promise.reject(e)
     }
   }

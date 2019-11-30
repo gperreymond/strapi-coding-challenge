@@ -49,6 +49,24 @@ describe('[Integration] The global application', () => {
       expect(e).toEqual(null)
     }
   })
+  test('should call the gateway api planet get by code and return 200', async () => {
+    try {
+      const { data: json } = await axios.get('http://localhost:7070/api/planets/code/MER')
+      expect(json.code).toEqual('MER')
+    } catch (e) {
+      expect(e).toEqual(null)
+    }
+  })
+  test('should call the gateway api planet get by code and return 404', async () => {
+    try {
+      await axios.get('http://localhost:7070/api/planets/code/TOTO')
+    } catch (e) {
+      const { response: { data: { statusCode, error, message } } } = e
+      expect(statusCode).toEqual(404)
+      expect(error).toEqual('Not Found')
+      expect(message).toEqual('Planet not found')
+    }
+  })
   test('should call the gateway api spaceCenters and return 200, with no query params', async () => {
     try {
       const { data: json } = await axios.get('http://localhost:7070/api/spaceCenters')
@@ -102,7 +120,73 @@ describe('[Integration] The global application', () => {
       expect(e.message).toEqual(null)
     }
   })
-  test('should call apollo server and return query on spaceCenters', async () => {
+  test('should call apollo server and return query on spaceCenters with params (page)', async () => {
+    try {
+      const { data: json } = await axios.post('http://localhost:3030/graphql', {
+        query: `
+          query spaceCenters {
+            spaceCenters(page: 2) {
+              pagination {
+                total
+                page
+                pageSize
+              }
+              nodes {
+                id
+                uid
+                name
+                description
+                latitude
+                longitude
+                planet {
+                  id
+                  name
+                  code
+                }
+              }
+            }
+          }
+        `
+      })
+      expect(json.data.spaceCenters.nodes.length).toEqual(10)
+    } catch (e) {
+      expect(e.message).toEqual(null)
+    }
+  })
+  test('should call apollo server and return query on spaceCenters with params (pageSize)', async () => {
+    try {
+      const { data: json } = await axios.post('http://localhost:3030/graphql', {
+        query: `
+          query spaceCenters {
+            spaceCenters(pageSize: 5) {
+              pagination {
+                total
+                page
+                pageSize
+              }
+              nodes {
+                id
+                uid
+                name
+                description
+                latitude
+                longitude
+                planet {
+                  id
+                  name
+                  code
+                }
+              }
+            }
+          }
+        `
+      })
+      expect(json.data.spaceCenters.nodes.length).toEqual(5)
+    } catch (e) {
+      expect(e.message).toEqual(null)
+    }
+  })
+  test('should call apollo server and return query on spaceCenters with params (page and pageSize)', async () => {
     try {
       const { data: json } = await axios.post('http://localhost:3030/graphql', {
         query: `
@@ -131,6 +215,53 @@ describe('[Integration] The global application', () => {
         `
       })
       expect(json.data.spaceCenters.nodes.length).toEqual(20)
+    } catch (e) {
+      expect(e.message).toEqual(null)
+    }
+  })
+  test('should call apollo server and return an error because query on spaceCenter with params (uid) ws not found', async () => {
+    try {
+      await axios.post('http://localhost:3030/graphql', {
+        query: `
+          query spaceCenter {
+            spaceCenter(uid: "no-no-no-no") {
+              id
+              uid
+              name
+              description
+              planet {
+                id
+                name
+                code
+              }
+            }
+          }
+        `
+      })
+    } catch (e) {
+      expect(e.message).toEqual('Request failed with status code 500')
+    }
+  })
+  test('should call apollo server and return query on spaceCenter with params (uid)', async () => {
+    try {
+      const { data: json } = await axios.post('http://localhost:3030/graphql', {
+        query: `
+          query spaceCenter {
+            spaceCenter(uid: "da9c2dee-3b38-4d21-b911-083599c05dad") {
+              id
+              uid
+              name
+              description
+              planet {
+                id
+                name
+                code
+              }
+            }
+          }
+        `
+      })
+      expect(json.data.spaceCenter.uid).toEqual('da9c2dee-3b38-4d21-b911-083599c05dad')
     } catch (e) {
       expect(e.message).toEqual(null)
     }

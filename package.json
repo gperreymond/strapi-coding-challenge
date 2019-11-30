@@ -44,7 +44,6 @@
     "pg": "7.14.0"
   },
   "devDependencies": {
-    "apollo-server-testing": "2.9.12",
     "axios": "0.19.0",
     "jest": "24.9.0",
     "nodemon": "1.19.4",

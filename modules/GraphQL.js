@@ -45,7 +45,9 @@ class GraphQL {
       debug(`Apollo Server started on port: ${Configuration.apollo.port}`)
       return true
     } catch (e) {
+      /* istanbul ignore next */
       this.emit('error', e)
+      /* istanbul ignore next */
       return Promise.reject(e)
     }
   }

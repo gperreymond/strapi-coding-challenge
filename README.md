@@ -42,10 +42,16 @@ docker swarm init
 Une fois cela vérifié, lancez la stack en local en effectuant :
 
 ```sh
-./boostrap --start
+./boostrap.sh --start
 ```
 
-Il faut attendre que tout soit bien démarré, puis quand cela est fait, passez à la migration des data :
+__Pour stopper la stack en local, une fois la review effectuée, faire :__
+
+```sh
+./boostrap.sh --stop
+```
+
+Mais revenons à l'installation, il faut attendre que tout soit bien démarré, puis quand cela est fait, passez à la migration des data :
 
 ```sh
 yarn knex:all
