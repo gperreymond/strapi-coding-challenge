@@ -81,3 +81,9 @@ A ce stade, deux servers http sont disponibles :
 - __hapijs__ : http://localhost:7000/documentation
 
 Comme vous le voyez, une auto-documentation est générée par la configuration, voir __swagger__ pour plus d'information.
+
+### Allez plus loin
+
+Un service important ici est le __services/Metrics.js__, comme on peut le voir nous pouvons brancher des exporters vers logstash (pour kibana), où même des évènements.
+
+On peut également étendre l'architecture pour faire un véritable CQRS / Eventsourcing assez facilement.

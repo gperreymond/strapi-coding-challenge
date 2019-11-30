@@ -19,10 +19,18 @@ process.on('exit', (n) => {
   if (n !== 0) { captureException(new Error('Node process has exit...')) }
 })
 
+const NATS = {
+  url: `nats://${Configuration.nats.hostname}:${Configuration.nats.port}`,
+  user: Configuration.nats.username,
+  pass: Configuration.nats.password,
+  maxReconnectAttempts: Configuration.nats.maxReconnectAttempts,
+  reconnect: false
+}
+
 const start = async function () {
   try {
     // Moleculer on nats (Services)
-    const moleculer = new Moleculer()
+    const moleculer = new Moleculer('NATS', NATS)
     moleculer.on('error', err => { throw err })
     await moleculer.start()
     // Gateway (Hapi server)

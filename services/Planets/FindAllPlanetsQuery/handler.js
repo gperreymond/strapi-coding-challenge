@@ -2,7 +2,7 @@ const db = require('../../../data/db')
 
 const handler = async function (ctx) {
   try {
-    ctx.broker.logger.warn(ctx.action.name, ctx.params)
+    this.logger.info(ctx.action.name, ctx.params)
     const data = await db('planets')
     return data
   } catch (e) {

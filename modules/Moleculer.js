@@ -31,17 +31,7 @@ class Moleculer {
         '**': 'info'
       },
       logger: Configuration.moleculer.logger,
-      metrics: {
-        enabled: true,
-        reporter: [{
-          type: 'Prometheus',
-          options: {
-            port: 3030,
-            includes: ['moleculer.**'],
-            excludes: ['moleculer.transit.**']
-          }
-        }]
-      },
+      metrics: true,
       middlewares: [{
         stopped: () => {
           this.emit('error', new Error('Moleculer has stopped'))
@@ -66,10 +56,18 @@ class Moleculer {
       if (services.length === 0) { return true }
       do {
         const item = services.shift()
-        const basename = path.basename(item)
-        debug(`Service ${basename} is detected`)
-        const service = new Service(basename)
-        this.getInstance().createService(service.getInstance())
+        const basename = path.basename(item, '.js')
+        const extname = path.extname(item)
+        if (extname !== '') {
+          // Service is a File
+          debug(`Service ${basename} is detected (from file)`)
+          this.getInstance().createService(require(item))
+        } else {
+          // Service is a Configuration
+          debug(`Service ${basename} is detected (from configuration)`)
+          const service = new Service(basename)
+          this.getInstance().createService(service.getInstance())
+        }
       } while (services.length > 0)
       return true
     } catch (e) {
