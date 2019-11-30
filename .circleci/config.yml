@@ -9,4 +9,4 @@ jobs:
       # specify any bash command here prefixed with `run: `
       - run: yarn
       - run: yarn test
-      - run: yarn:coveralls
+      - run: yarn coveralls

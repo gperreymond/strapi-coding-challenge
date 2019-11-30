@@ -12,6 +12,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "bootstrap:start": "./bootstrap.sh --start",
+    "bootstrap:stop": "./bootstrap.sh --stop",
     "knex:migrate": "knex migrate:latest",
     "knex:rollback": "knex migrate:rollback",
     "knex:seed": "knex seed:run",
@@ -19,7 +21,7 @@
     "start": "node scripts/start",
     "test": "./scripts/test.sh",
     "test:coverage": "jest --coverage --verbose --detectOpenHandles --forceExit",
-    "yarn:coveralls": "cat coverage/lcov.info | coveralls",
+    "coveralls": "cat coverage/lcov.info | coveralls",
     "standard": "standard"
   },
   "dependencies": {
