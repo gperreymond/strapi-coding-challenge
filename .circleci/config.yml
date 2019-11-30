@@ -7,5 +7,7 @@ jobs:
     steps:
       - checkout
       # specify any bash command here prefixed with `run: `
+      - run: npm i -g coveralls
       - run: yarn
       - run: yarn test
+      - run: cat coverage/lcov.info | coveralls

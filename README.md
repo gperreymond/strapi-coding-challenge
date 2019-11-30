@@ -1,5 +1,7 @@
 # Strapi Coding Challenge
 
+[![Coverage Status](https://coveralls.io/repos/github/gperreymond/strapi-coding-challenge/badge.svg?branch=master)](https://coveralls.io/github/gperreymond/strapi-coding-challenge?branch=master)  [![CircleCI](https://circleci.com/gh/gperreymond/strapi-coding-challenge.svg?style=shield)](https://circleci.com/gh/gperreymond/strapi-coding-challenge)
+
 Le projet est "configuration driven", tout part de la définition des services et des actions, aussi appelés "microservices".
 
 ![moleculer services](moleculer.png?raw=true)
