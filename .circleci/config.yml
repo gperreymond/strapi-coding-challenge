@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       # specify the version
-      - image: " circleci/node:10.16.3"
+      - image: "circleci/node:12"
     steps:
       - checkout
       # specify any bash command here prefixed with `run: `
