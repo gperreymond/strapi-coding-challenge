@@ -87,3 +87,5 @@ Comme vous le voyez, une auto-documentation est générée par la configuration,
 Un service important ici est le __services/Metrics.js__, comme on peut le voir nous pouvons brancher des exporters vers logstash (pour kibana), où même des évènements.
 
 On peut également étendre l'architecture pour faire un véritable CQRS / Eventsourcing assez facilement.
+
+La dockerisation est quant à elle facile, pas besoin de montrer quelque chose dessus.
