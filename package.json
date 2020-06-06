@@ -32,7 +32,7 @@
     "@hapi/inert": "5.2.2",
     "@hapi/joi": "16.1.8",
     "@hapi/vision": "5.5.4",
-    "apollo-server": "2.9.12",
+    "apollo-server": "2.14.2",
     "apollo-server-plugin-response-cache": "0.3.8",
     "colors": "1.4.0",
     "debug": "4.1.1",
